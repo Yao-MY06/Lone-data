@@ -85,17 +85,17 @@ create table user (
 
 ## 2.2 数据类型怎么选
 
-| 场景 | 推荐 | 为什么 |
-|---|---|---|
-| 主键/外键 | bigint | 业务增长后 int 可能不够；统一类型减少 join 转换 |
-| 金额 | decimal(10,2) 或 bigint 存分 | 不要用 float/double 算钱 |
-| 状态 | tinyint + Java 枚举 | 存储小；代码侧可读 |
-| 短字符串 | varchar(n)，n 别乱给 255 | 过长影响索引、排序、内存估计 |
-| 手机号 | varchar(20) | 不是数字，可能含区号/前导 0，不参与运算 |
-| 正文/备注 | varchar/text 按长度 | 大文本别和热点行混设计，详情可拆表 |
-| 时间 | datetime 或 timestamp 统一 | timestamp 有时区与范围特性；团队先统一 |
-| JSON | json | 可变扩展字段可用，但高频过滤字段别藏 JSON 里 |
-| 布尔 | tinyint(1) 或 boolean 别名 | Java 映射 boolean，DB 仍 tinyint |
+| 场景    | 推荐                        | 为什么                           |
+| ----- | ------------------------- | ----------------------------- |
+| 主键/外键 | bigint                    | 业务增长后 int 可能不够；统一类型减少 join 转换 |
+| 金额    | decimal(10,2) 或 bigint 存分 | 不要用 float/double 算钱           |
+| 状态    | tinyint + Java 枚举         | 存储小；代码侧可读                     |
+| 短字符串  | varchar(n)，n 别乱给 255      | 过长影响索引、排序、内存估计                |
+| 手机号   | varchar(20)               | 不是数字，可能含区号/前导 0，不参与运算         |
+| 正文/备注 | varchar/text 按长度          | 大文本别和热点行混设计，详情可拆表             |
+| 时间    | datetime 或 timestamp 统一   | timestamp 有时区与范围特性；团队先统一      |
+| JSON  | json                      | 可变扩展字段可用，但高频过滤字段别藏 JSON 里     |
+| 布尔    | tinyint(1) 或 boolean 别名   | Java 映射 boolean，DB 仍 tinyint  |
 
 金额重点：外卖订单金额建议统一“分”存 bigint，展示层转元；如果团队习惯 decimal，也要全系统统一，不要一边分一边元。
 
