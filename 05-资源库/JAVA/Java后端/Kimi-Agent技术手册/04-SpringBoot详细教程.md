@@ -1,4 +1,4 @@
-# Spring Boot 详细教程：从概念到生产项目
+	# Spring Boot 详细教程：从概念到生产项目
 
 > 适用对象：有 Java 基础，想系统掌握 Spring Boot 的学习者。  
 > 主线：Spring Boot 3.x / Spring Framework 6.x / Java 17+。涉及 2.x 时会明确标注 `javax.*` 与 `jakarta.*` 等差异。  
