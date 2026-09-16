@@ -2,6 +2,9 @@
 05-资源库/密码.md
 05-资源库/密码-原始备份/
 
+# WorkBuddy 本地会话/临时文件，不入库
+.workbuddy/
+
 # Obsidian 本地工作区状态
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json
