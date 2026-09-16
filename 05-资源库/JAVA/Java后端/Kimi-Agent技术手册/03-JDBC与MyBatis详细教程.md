@@ -376,7 +376,7 @@ List<Dish> listOnSale(@Param("merchantId") long merchantId,
 ```xml
 <resultMap id="DishMap" type="com.example.dish.Dish">
   <id column="id" property="id"/>
-  <result column="merchant_id" property="merchantId"/>
+	  <result column="merchant_id" property="merchantId"/>
   <result column="category_id" property="categoryId"/>
   <result column="name" property="name"/>
   <result column="price" property="price"/>
