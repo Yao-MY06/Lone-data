@@ -9,7 +9,8 @@
 | --- | --- |
 | 仓库 | `github.com/earendil-works/pi`（原 `badlogic/pi-mono`） |
 | 包名 | CLI `@earendil-works/pi-coding-agent` **1.3.0**；运行时 `@earendil-works/pi-agent-core` **1.3.0**；模型层 `@earendil-works/pi-ai` **1.3.0** |
-| 本页读的源码 | `@earendil-works/pi-agent-core` **1.3.0 发布包**内 `dist/agent-loop.js.map` 的 `sourcesContent`（还原出 `src/agent-loop.ts`，**950 行 / 29,509 字符**）；与仓库 `main` 分支同名文件（949 行 / 29,513 字符）**逐行 diff 无差异**（仅末尾空行） |
+| 本页读的源码 | `@earendil-works/pi-agent-core` **1.3.0 发布包**内 `dist/agent-loop.js.map` 的 `sourcesContent`（还原出 `src/agent-loop.ts`，**949 行 / 29,509 字符**，`wc -l`）；与仓库 `main` 分支同名文件（949 行 / 29,513 字符）**逐行 diff 无差异**（4 字符差来自行尾空白） |
+| 源码落地位置 | 三份还原源码已迁到 `F:\study\agent\reference\pi-1.3.0\`（`agent-loop.ts` 949 / `agent.ts` 613 / `types.ts` 539 行）；pi 运行时在 `F:\study\agent\tools\pi\`（CLI `--version` 实测输出 1.3.0） |
 | 口径警告（已核销） | 原本担心"读 main 会与发布版偏移"。实际比对证明两者一致，**本页行号对 1.3.0 发布版同样有效** |
 | 模型接入 | pi 内置 `providers/deepseek.ts`，`env-api-keys.ts:92` 把 provider `deepseek` 映射到环境变量 `DEEPSEEK_API_KEY` —— 接入只需环境变量，不必写配置文件 |
 
