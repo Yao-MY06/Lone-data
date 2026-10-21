@@ -119,3 +119,27 @@ runLoop (L163)
 - [x] ~~`agent.ts` 与 `types.ts` 未细读~~ → **已补读**（`agent.ts` 614 行、`types.ts` 540 行，同样由 1.3.0 包内 source map 还原）：新增结论见 §二（systemPrompt 是 transcript 投影）、§三第 7 条（content/details/structuredContent 三份内容）、§四（steering 与 followUp 两队列 + `one-at-a-time`）。
 - [x] **DeepSeek 模型清单已核实**（读已安装的 `@earendil-works/pi-ai` 包内 `dist/providers/data/deepseek.json`，**不需要 key**）：只有两个 model id —— `deepseek-flash`（DeepSeek V4.1 Flash）与 `deepseek-v4-pro`（DeepSeek V4 Pro）；均 `reasoning: true`、`contextWindow: 1,000,000`、`maxTokens: 384,000`，走 `openai-completions` API，baseUrl `https://api.deepseek.com`。→ 将来实跑时不需要配 baseUrl，只设 `DEEPSEEK_API_KEY` 即可。
 - [ ] 循环防护/压缩在 pi 里的"使用方实现"样例没看（`pi-coding-agent` 是使用方，它的 `prepareNextTurn` 实现可作为简版参照）。
+
+## 八、实派任务 runbook（2026-10-21 备好，等用户自己跑）
+
+产出物一缺的最后一步是"安装并**实际派任务**使用"。key 在用户手里、AI 不代跑；以下命令均经 2026-10-21 实测（CLI `--version` = 1.3.0；`--list-models deepseek` 确认两个内置模型），照抄即可。
+
+**步骤**（PowerShell，约 15 分钟）：
+
+```powershell
+# 1. 设 key（仅当前窗口有效；pi 读 DEEPSEEK_API_KEY，见 env-api-keys.ts:92）
+$env:DEEPSEEK_API_KEY="你的key"
+
+# 2. 非交互派一个只读任务（-p 跑完即退；--mode json 把事件流逐行打出）
+node F:\study\agent\tools\pi\node_modules\@earendil-works\pi-coding-agent\dist\bundle\cli.js -p `
+  --model deepseek/deepseek-flash --mode json `
+  "读 F:\study\agent\agent-loop-demo\pom.xml，告诉我 artifactId 和 Java 版本。不要修改任何文件。"
+```
+
+**观察点（对着本页 §一~§四 的源码结论看）**：
+
+1. `--mode json` 打出的事件序列应对应 `runLoop` 骨架：`agent_start → turn_start → message_start/end（assistant 带 toolCall）→ tool_execution_start/end → message_start/end（toolResult）→ … → turn_end → agent_end`。数一数 loop 转了几轮。
+2. 工具结果回灌：模型第二轮的回答里应引用第一轮 read 到的 pom 内容 —— 这就是"transcript 即唯一真相"的实际表现（§二）。
+3. 终止：任务完成后是**自然终止**（assistant 消息无工具调用，内层退出，§四出口③），没有外部熔断介入。
+
+**跑完回来记什么**：实际轮数、事件序列是否如预期、模型是否真读了文件（还是瞎编）、花了多少 token（`agent_end` 或结果里若有 usage 字段）。把答案补到 §七 首条，产出物一才算齐。
