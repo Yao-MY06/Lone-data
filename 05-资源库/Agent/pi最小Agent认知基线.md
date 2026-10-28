@@ -122,7 +122,7 @@ runLoop (L163)
 
 ## 八、实派任务 runbook（2026-10-21 备好，等用户自己跑）
 
-产出物一缺的最后一步是"安装并**实际派任务**使用"。key 在用户手里、AI 不代跑；以下命令均经 2026-10-21 实测（CLI `--version` = 1.3.0；`--list-models deepseek` 确认两个内置模型），照抄即可。
+产出物一缺的最后一步是"安装并**实际派任务**使用"。key 在用户手里、AI 不代跑。**口径订正（2026-10-24）**：`--version` = 1.3.0 与 `--list-models deepseek` 是 AI 代跑过的；第 2 步「派任务」命令**从未被任何人执行过**，参数只由 AI 对着 `pi-coding-agent` 的 `dist/cli/args.js` 读源码核对过（`-p`、`--mode json`、`--model provider/id` 均被解析），**不是实测**。题单与判据见 [[pi机制笔记-02-实派任务]]。
 
 **步骤**（PowerShell，约 15 分钟）：
 
@@ -131,10 +131,18 @@ runLoop (L163)
 $env:DEEPSEEK_API_KEY="你的key"
 
 # 2. 非交互派一个只读任务（-p 跑完即退；--mode json 把事件流逐行打出）
-node F:\study\agent\tools\pi\node_modules\@earendil-works\pi-coding-agent\dist\bundle\cli.js -p `
-  --model deepseek/deepseek-flash --mode json `
-  "读 F:\study\agent\agent-loop-demo\pom.xml，告诉我 artifactId 和 Java 版本。不要修改任何文件。"
+#    日志落盘留证：Out-File 指定 utf8（不要用 > 或 Tee-Object，Windows PowerShell 5.1 下会存成 UTF-16）
+New-Item -ItemType Directory -Force F:\study\agent\evidence\pi-run-01 | Out-Null
+# 命令拆成变量 + 单行（2026-10-26 订正：原多行反引号写法粘贴进控制台会被拆成两条语句，报 "empty pipe element"）
+$cli = "F:\study\agent\tools\pi\node_modules\@earendil-works\pi-coding-agent\dist\bundle\cli.js"
+$prompt = "读 F:\study\agent\agent-loop-demo\pom.xml，告诉我 artifactId 和 Java 版本。不要修改任何文件。"
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8   # 2026-10-26 实测补：不加则中文在日志里乱码，13 行 JSON 损坏
+node $cli -p --model deepseek/deepseek-flash --mode json $prompt | Out-File -Encoding utf8 F:\study\agent\evidence\pi-run-01\run1.jsonl
 ```
+
+用**普通权限**的 PowerShell，先 `cd F:\study\agent`；不要开「管理员」窗口（pi 默认带 bash/write/edit 工具，session 的 `cwd` 会取当前目录）。
+
+跑完用 `Get-Content F:\study\agent\evidence\pi-run-01\run1.jsonl | Select-Object -First 5` 先看一眼是否真有内容（终端不会实时刷屏，因为输出被管道接走了）。日志文件由你本人产生，AI 只在你同意后只读核对。
 
 **观察点（对着本页 §一~§四 的源码结论看）**：
 
