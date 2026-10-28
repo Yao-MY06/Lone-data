@@ -8,6 +8,7 @@
 
 - **放什么**：项目一「微服务高并发交易平台」（基于 hmdp 二开）的范围、阶段门、验收与参考资料。
 - **不放什么**：项目二的东西（去 03）、通用八股（去 04）。代码在 `F:\study\hmdp-base`，不在本库。
+- **代码远端（2026-10-28 起）**：`https://github.com/Yao-MY06/spike-trade`（**私有**，先私有后公开）。工程已**去标识化**：包 `com.spiketrade`、产物 `spike-trade`、库 `spike_trade`。公开前仍待：README 来源表述、license 决定、`mvn clean` 清旧 jar、删 `_to_delete/`。
 - **谁能写**：Java 会话。
 
 ## 文件
